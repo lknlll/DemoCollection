@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lkn.a11509.democollection.Adapter.TestAdapter;
 import com.lkn.a11509.democollection.Bean.DataBean;
@@ -16,6 +17,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
+import butterknife.OnItemLongClick;
 import butterknife.OnLongClick;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.buk_tv:
                 break;
             case R.id.buk_btn:
+                Toast.makeText(this, R.id.buk_btn+"", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -66,8 +70,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onLongClick(View view){
         switch (view.getId()){
             case R.id.buk_tv:
+                Toast.makeText(this, new Throwable().getStackTrace()[0].getMethodName(), Toast.LENGTH_SHORT).show();
                 break;
         }
+        return true;
+    }
+
+    @OnItemClick({R.id.buk_lv})
+    public void onItemClick(int position){
+        Toast.makeText(this, "你点击的是第" + position + "条数据", Toast.LENGTH_SHORT).show();
+    }
+
+    //注意：这个方法返回boolean类型
+    @OnItemLongClick({R.id.buk_lv})
+    public boolean onItemLongClick(View view){
+        Toast.makeText(this, "你要不要再按久点！", Toast.LENGTH_SHORT).show();
         return true;
     }
 }
