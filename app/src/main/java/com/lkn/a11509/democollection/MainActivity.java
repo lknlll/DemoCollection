@@ -1,7 +1,6 @@
 package com.lkn.a11509.democollection;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -21,7 +20,7 @@ import butterknife.OnItemClick;
 import butterknife.OnItemLongClick;
 import butterknife.OnLongClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
     @BindView(R.id.buk_tv)
@@ -34,13 +33,24 @@ public class MainActivity extends AppCompatActivity {
     private List<DataBean> data;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setUpContentView() {
         //layout处右击或者Alt + Insert Generate ButterKnife Injections
         setContentView(R.layout.activity_main);
-        //绑定Activity
-        ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void setUpView() {
         initListViewData();
+    }
+
+    @Override
+    protected void setUpData(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void setUpTitle(int titleResId) {
+        super.setUpTitle(R.string.app_name);
     }
 
     private void initListViewData(){
@@ -70,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onLongClick(View view){
         switch (view.getId()){
             case R.id.buk_tv:
+                //返回被调用方法名
                 Toast.makeText(this, new Throwable().getStackTrace()[0].getMethodName(), Toast.LENGTH_SHORT).show();
                 break;
         }
@@ -78,7 +89,13 @@ public class MainActivity extends AppCompatActivity {
 
     @OnItemClick({R.id.buk_lv})
     public void onItemClick(int position){
-        Toast.makeText(this, "你点击的是第" + position + "条数据", Toast.LENGTH_SHORT).show();
+        switch (position) {
+            case 0:
+                Toast.makeText(this, getString(R.string.main_activity_position)
+                        + position + getString(R.string.module_name_recycler), Toast.LENGTH_SHORT).show();
+                gotoActivity(MainActivity.this,RecyclerDemoActivity.class,null,false);
+                break;
+        }
     }
 
     //注意：这个方法返回boolean类型

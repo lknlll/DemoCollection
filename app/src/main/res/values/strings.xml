@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">DemoCollection</string>
 
+    <string name="module_name_recycler">Recycler</string>
+    <string name="main_activity_position">Position</string>
+    <string name="title_activity_recycler_demo">RecyclerDemoActivity</string>
+
 </resources>
