@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--gravity如果不设置则效果完全不同-->
+
+    <item android:gravity="center">
+        <shape android:shape="rectangle">
+            <size
+                android:width="20dp"
+                android:height="2dp"/>
+            <solid android:color="@android:color/white"/>
+        </shape>
+    </item>
+
+    <item
+        android:gravity="center">
+        <shape android:shape="rectangle">
+            <size
+                android:width="2dp"
+                android:height="20dp"/>
+            <solid android:color="@android:color/white"/>
+        </shape>
+    </item>
+
+</layer-list>
