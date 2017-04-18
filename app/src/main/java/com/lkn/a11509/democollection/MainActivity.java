@@ -1,6 +1,12 @@
 package com.lkn.a11509.democollection;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -9,12 +15,18 @@ import android.widget.Toast;
 
 import com.lkn.a11509.democollection.Adapter.TestAdapter;
 import com.lkn.a11509.democollection.Bean.DataBean;
+import com.lkn.a11509.democollection.Bean.MenuItem;
+import com.lkn.a11509.democollection.Fragment.BottomMenuFragment;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.OnItemLongClick;
@@ -35,6 +47,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void setUpContentView() {
         //layout处右击或者Alt + Insert Generate ButterKnife Injections
+        //if this option is missing,try Invalidate caches/ restart
         setContentView(R.layout.activity_main);
     }
 
@@ -45,12 +58,90 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setUpData(Bundle savedInstanceState) {
-
+        Log.v("deviceInfo",getDeviceInfo(this));
     }
 
     @Override
     protected void setUpTitle(int titleResId) {
         super.setUpTitle(R.string.app_name);
+    }
+
+    public static boolean checkPermission(Context context, String permission) {
+        boolean result = false;
+        if (Build.VERSION.SDK_INT >= 23) {
+            try {
+                Class<?> clazz = Class.forName("android.content.Context");
+                Method method = clazz.getMethod("checkSelfPermission", String.class);
+                int rest = (Integer) method.invoke(context, permission);
+                if (rest == PackageManager.PERMISSION_GRANTED) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            } catch (Exception e) {
+                result = false;
+            }
+        } else {
+            PackageManager pm = context.getPackageManager();
+            if (pm.checkPermission(permission, context.getPackageName()) == PackageManager.PERMISSION_GRANTED) {
+                result = true;
+            }
+        }
+        return result;
+    }
+    public static String getDeviceInfo(Context context) {
+        try {
+            org.json.JSONObject json = new org.json.JSONObject();
+            android.telephony.TelephonyManager tm = (android.telephony.TelephonyManager) context
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            String device_id = null;
+            if (checkPermission(context, Manifest.permission.READ_PHONE_STATE)) {
+                device_id = tm.getDeviceId();
+            }
+            String mac = null;
+            FileReader fstream = null;
+            try {
+                fstream = new FileReader("/sys/class/net/wlan0/address");
+            } catch (FileNotFoundException e) {
+                fstream = new FileReader("/sys/class/net/eth0/address");
+            }
+            BufferedReader in = null;
+            if (fstream != null) {
+                try {
+                    in = new BufferedReader(fstream, 1024);
+                    mac = in.readLine();
+                } catch (IOException e) {
+                } finally {
+                    if (fstream != null) {
+                        try {
+                            fstream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (in != null) {
+                        try {
+                            in.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+            json.put("mac", mac);
+            if (TextUtils.isEmpty(device_id)) {
+                device_id = mac;
+            }
+            if (TextUtils.isEmpty(device_id)) {
+                device_id = android.provider.Settings.Secure.getString(context.getContentResolver(),
+                        android.provider.Settings.Secure.ANDROID_ID);
+            }
+            json.put("device_id", device_id);
+            return json.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void initListViewData(){
@@ -68,6 +159,29 @@ public class MainActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buk_tv:
+                BottomMenuFragment bottomMenuFragment = new BottomMenuFragment();
+
+                List<MenuItem> menuItemList = new ArrayList<MenuItem>();
+                MenuItem menuItem1 = new MenuItem();
+                menuItem1.setText("Hello World");
+                menuItem1.setStyle(MenuItem.MenuItemStyle.COMMON);
+                MenuItem menuItem2 = new MenuItem();
+                menuItem2.setText("Menu Btn 2");
+                MenuItem menuItem3 = new MenuItem();
+                menuItem3.setText("点击！");
+                menuItem3.setMenuItemOnClickListener(new MenuItemOnClickListener(bottomMenuFragment, menuItem3) {
+                    @Override
+                    public void onClickMenuItem(View v, MenuItem menuItem) {
+                        Log.i("", "onClickMenuItem: ");
+                    }
+                });
+                menuItemList.add(menuItem1);
+                menuItemList.add(menuItem2);
+                menuItemList.add(menuItem3);
+
+                bottomMenuFragment.setMenuItems(menuItemList);
+
+                bottomMenuFragment.show(getSupportFragmentManager(), "BottomMenuFragment");
                 break;
             case R.id.buk_btn:
                 Toast.makeText(this, R.id.buk_btn+"", Toast.LENGTH_SHORT).show();
@@ -94,6 +208,21 @@ public class MainActivity extends BaseActivity {
                 Toast.makeText(this, getString(R.string.main_activity_position)
                         + position + getString(R.string.module_name_recycler), Toast.LENGTH_SHORT).show();
                 gotoActivity(MainActivity.this,RecyclerDemoActivity.class,null,false);
+                break;
+            case 1:
+                Toast.makeText(this, getString(R.string.main_activity_position)
+                        + position + getString(R.string.title_activity_refresh_demo), Toast.LENGTH_SHORT).show();
+                gotoActivity(MainActivity.this,DefineLoadWithRefreshActivity.class,null,false);
+                break;
+            case 2:
+                Toast.makeText(this, getString(R.string.main_activity_position)
+                        + position + getString(R.string.title_activity_life_circle_demo), Toast.LENGTH_SHORT).show();
+                gotoActivity(MainActivity.this,LifeCircleActivity.class,null,false);
+                break;
+            case 3:
+                Toast.makeText(this, getString(R.string.main_activity_position)
+                        + position + getString(R.string.title_refresh_counter), Toast.LENGTH_SHORT).show();
+                gotoActivity(MainActivity.this,RefreshCounterActivity.class,null,false);
                 break;
         }
     }
