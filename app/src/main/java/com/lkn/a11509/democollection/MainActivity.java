@@ -7,7 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -59,6 +61,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void setUpData(Bundle savedInstanceState) {
         Log.v("deviceInfo",getDeviceInfo(this));
+        Log.v("screenInfo",getWindowsSize());
     }
 
     @Override
@@ -142,6 +145,16 @@ public class MainActivity extends BaseActivity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private String getWindowsSize(){
+        //Android获得屏幕的宽和高
+        WindowManager windowManager = getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        int screenWidth = screenWidth = display.getWidth();
+        int screenHeight = screenHeight = display.getHeight();
+        String size = screenHeight +"x"+screenWidth;
+        return size;
     }
 
     private void initListViewData(){
