@@ -23,6 +23,16 @@
         <activity
             android:name=".StaggeredMainActivity"
             android:theme="@style/Theme.MaterialDesign" />
+        <activity
+            android:name=".DefineLoadWithRefreshActivity"
+            android:theme="@style/Theme.MaterialDesign" />
+        <activity android:name=".LifeCircleActivity" />
+        <activity
+            android:name=".RefreshCounterActivity"
+            android:theme="@style/Theme.MaterialDesign" />
+        <activity
+            android:name=".FlowActivity"
+            android:theme="@style/Theme.MaterialDesign" />
     </application>
 
 </manifest>

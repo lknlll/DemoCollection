@@ -2,6 +2,7 @@ package com.lkn.a11509.democollection;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -185,6 +186,9 @@ public class MainActivity extends BaseActivity {
                 menuItem3.setMenuItemOnClickListener(new MenuItemOnClickListener(bottomMenuFragment, menuItem3) {
                     @Override
                     public void onClickMenuItem(View v, MenuItem menuItem) {
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this,FlowActivity.class);
+                        startActivity(intent);
                         Log.i("", "onClickMenuItem: ");
                     }
                 });
