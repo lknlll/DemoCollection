@@ -1,6 +1,7 @@
 package com.lkn.a11509.democollection;
 
 import android.Manifest;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -61,6 +62,20 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setUpData(Bundle savedInstanceState) {
+        int sdkInt = Build.VERSION.SDK_INT;
+        if (sdkInt > Build.VERSION_CODES.HONEYCOMB) {// api11
+            ClipboardManager copy = (ClipboardManager) MainActivity.this
+                    .getSystemService(Context.CLIPBOARD_SERVICE);
+            copy.setText(getDeviceInfo(this));
+            Toast.makeText(MainActivity.this, "成功复制到粘贴板",
+                    Toast.LENGTH_SHORT).show();
+        } else if (sdkInt <= Build.VERSION_CODES.HONEYCOMB) {
+            android.text.ClipboardManager copyq = (android.text.ClipboardManager) MainActivity.this
+                    .getSystemService(Context.CLIPBOARD_SERVICE);
+            copyq.setText(getDeviceInfo(this));
+            Toast.makeText(MainActivity.this, "成功复制到粘贴板",
+                    Toast.LENGTH_SHORT).show();
+        }
         Log.v("deviceInfo",getDeviceInfo(this));
         Log.v("screenInfo",getWindowsSize());
     }
