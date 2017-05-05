@@ -9,4 +9,7 @@
     <color name="bottom_menu_btn_text_press_colot">#3F51B5</color>
     <color name="bottom_menu_btn_text_stress_color">#FF0000</color>
     <color name="bottom_menu_layout_color">#00000000</color>
+    <color name="color_red">#EA4346</color>
+    <color name="color_black">#646363</color>
+    <color name="color_blue">#3789F9</color>
 </resources>
