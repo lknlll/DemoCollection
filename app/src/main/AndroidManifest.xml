@@ -33,6 +33,9 @@
         <activity
             android:name=".FlowActivity"
             android:theme="@style/Theme.MaterialDesign" />
+        <activity
+            android:name=".PaletteImageViewActivity"
+            android:theme="@style/Theme.MaterialDesign" />
     </application>
 
 </manifest>

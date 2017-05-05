@@ -175,10 +175,23 @@ public class MainActivity extends BaseActivity {
 
     private void initListViewData(){
         data = new ArrayList<>();
-        for (int i = 0; i<6;i++){
+        for (int i = 0; i<7;i++){
             DataBean bean = new DataBean();
-            bean.setTitle(getResources().getString(R.string.app_name)+i);
-            bean.setContent(getResources().getString(R.string.app_name));
+            switch (i) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    bean.setTitle(getResources().getString(R.string.app_name)+i);
+                    bean.setContent(getResources().getString(R.string.app_name));
+                    break;
+                case 6:
+                    bean.setTitle("PaletteImageViewActivity");
+                    bean.setContent("提取图片的主要颜色作为图片阴影");
+                    break;
+            }
             data.add(bean);
         }
         bukLv.setAdapter(new TestAdapter(this,data));
@@ -255,6 +268,9 @@ public class MainActivity extends BaseActivity {
                 Toast.makeText(this, getString(R.string.main_activity_position)
                         + position + getString(R.string.title_refresh_counter), Toast.LENGTH_SHORT).show();
                 gotoActivity(MainActivity.this,RefreshCounterActivity.class,null,false);
+                break;
+            case 6:
+                gotoActivity(MainActivity.this,PaletteImageViewActivity.class,null,false);
                 break;
         }
     }
