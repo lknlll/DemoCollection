@@ -46,4 +46,12 @@
         android:layout_height="100dp"
         app:circle_radius="10"
         app:duration="800"/>
+
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:scaleType="center"
+        android:id="@+id/red_pic"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:src="@mipmap/red"/>
 </LinearLayout>
