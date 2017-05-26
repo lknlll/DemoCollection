@@ -86,10 +86,12 @@ public class LineupActivity extends BaseActivity {
 
     @Override
     protected void setUpData(Bundle savedInstanceState) {
-//        if (0 != (teamAlphaList.size() + teamBetaList.size()) % 2 ){
-//            largerTeamList = teamAlphaList.size()>teamBetaList.size()?teamAlphaList:teamBetaList;
-//            optionalSelection.setVisibility(View.VISIBLE);
-//        }
+        if (0 != (teamAlphaList.size() + teamBetaList.size()) % 2 ){
+            largerTeamList = teamAlphaList.size()>teamBetaList.size()?teamAlphaList:teamBetaList;
+            optionalSelection.setVisibility(View.VISIBLE);
+        }else {
+            optionalSelection.setVisibility(View.GONE);
+        }
     }
 
     private Dialog buildAlertDialog_ban(final int id) {

@@ -15,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/flexbox_layout"
                 android:layout_width="match_parent"
@@ -32,7 +31,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/add_new_player" />
-
+                <LinearLayout
+                    android:focusable="true" android:focusableInTouchMode="true"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp">
+                    <requestFocus />
+                </LinearLayout>
                 <EditText
                     android:id="@+id/new_member_et"
                     android:layout_width="0dp"
@@ -47,18 +51,18 @@
 
                 <Button
                     android:visibility="gone"
-                    android:id="@+id/start_game"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="@string/start_game" />
-                <Button
-                    android:visibility="gone"
                     android:id="@+id/remove_member"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="@string/remove_member"/>
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/start_game"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_game" />
 
             </LinearLayout>
 

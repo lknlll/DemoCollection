@@ -146,6 +146,9 @@ public class FlowActivity extends BaseActivity {
                                 memberList.get(i).setSelected(!memberList.get(i).isSelected());
                                 currentMember.setBackgroundResource(memberList.get(i).isSelected() ? R.drawable.bg_box_selected :
                                         R.drawable.bg_box);
+                                currentMember.setTextColor(memberList.get(i).isSelected() ?
+                                        getResources().getColor(R.color.bottom_menu_btn_bg_common_color ):
+                                        getResources().getColor(R.color.colorAccent ));
                             }
                         }
                         countSign = 0;
@@ -175,6 +178,9 @@ public class FlowActivity extends BaseActivity {
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (0 == teamAlphaList.size() && 0 == teamBetaList.size()) {
+                            return;
+                        }
                         int tag = (Integer) textView.getTag();
                         switch (priority) {
                             //A First
