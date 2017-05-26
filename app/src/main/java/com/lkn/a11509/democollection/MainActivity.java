@@ -175,7 +175,7 @@ public class MainActivity extends BaseActivity {
 
     private void initListViewData(){
         data = new ArrayList<>();
-        for (int i = 0; i<7;i++){
+        for (int i = 0; i<8;i++){
             DataBean bean = new DataBean();
             switch (i) {
                 case 0:
@@ -190,6 +190,10 @@ public class MainActivity extends BaseActivity {
                 case 6:
                     bean.setTitle("PaletteImageViewActivity");
                     bean.setContent("提取图片的主要颜色作为图片阴影");
+                    break;
+                case 7:
+                    bean.setTitle("VectAlignActivity");
+                    bean.setContent("两张静态图片合并成SVG");
                     break;
             }
             data.add(bean);
@@ -271,6 +275,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case 6:
                 gotoActivity(MainActivity.this,PaletteImageViewActivity.class,null,false);
+                break;
+            case 7:
+                gotoActivity(MainActivity.this,VectAlignActivity.class,null,false);
                 break;
         }
     }

@@ -11,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -34,6 +35,8 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.android:flexbox:0.2.2'//FlexboxLayout流动性布局
     compile 'com.dingmouren.paletteimageview:paletteimageview:1.0.1'
+    compile 'com.wnafee:vector-compat:1.0.5'//两张静态图片合并SVG(Scalable Vector Graphics)
+    compile 'com.alibaba:fastjson:1.1.54.android'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
 }

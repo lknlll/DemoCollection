@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="520"
+    android:viewportHeight="520"
+
+    app:vc_viewportWidth="520"
+    app:vc_viewportHeight="520" >
+    <group
+        android:name="rotationGroup"
+        android:pivotX="260"
+        android:pivotY="260"
+        android:rotation="0.0">
+
+        <path
+            android:name="v"
+            android:strokeColor="#999999"
+            android:fillColor="#FFFFFF"
+            android:strokeWidth="6"
+            android:pathData="m 140.48016,477.87656 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 0.0,0.0,0.0,0.0,0.0,0.0 c 50.16652,0.0,93.34059,-30.61473,113.33915,-74.66302 c 20.01348,44.04733,63.19314,74.66302,113.36339,74.66302 c 69.1611,0.0,125.29187,-58.01557,125.29187,-129.49554 c 0.0,-145.39827,-141.92796,-183.52362,-238.65433,-327.27353 C 162.39255,163.96626,15.186441,207.62245,15.186441,348.381 c 0.0,71.47997,56.131695,129.49554,125.29373,129.49554 l 0.0,0.0 l 0.0,0.0 L 140.48016,477.87656"
+
+            app:vc_strokeColor="#999999"
+            app:vc_fillColor="#FFFFFF"
+            app:vc_strokeWidth="6"
+            app:vc_pathData="@string/svg_heart"/>
+    </group>
+</vector>

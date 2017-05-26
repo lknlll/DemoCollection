@@ -36,6 +36,12 @@
         <activity
             android:name=".PaletteImageViewActivity"
             android:theme="@style/Theme.MaterialDesign" />
+        <activity
+            android:name=".VectAlignActivity"
+            android:theme="@style/Theme.MaterialDesign" />
+        <activity
+            android:name=".LineupActivity"
+            android:theme="@style/Theme.MaterialDesign" />
     </application>
 
 </manifest>

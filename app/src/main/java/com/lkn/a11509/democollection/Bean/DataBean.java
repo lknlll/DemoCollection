@@ -7,9 +7,45 @@ import java.io.Serializable;
  */
 
 public class DataBean implements Serializable {
+    private int bannedCount;
+    private int leftCount;
     private int id;
     private String title;
     private String content;
+    private boolean isSelected;
+    private boolean isBanned;
+
+    public int getLeftCount() {
+        return leftCount;
+    }
+
+    public void setLeftCount(int leftCount) {
+        this.leftCount = leftCount;
+    }
+
+    public int getBannedCount() {
+        return bannedCount;
+    }
+
+    public void setBannedCount(int bannedCount) {
+        this.bannedCount = bannedCount;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public int getId() {
         return id;
