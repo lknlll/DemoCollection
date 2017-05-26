@@ -2,6 +2,7 @@
     <string name="app_name">DemoCollection</string>
 
     <string name="add_new_member">新增队员</string>
+    <string name="remove_member">删除所选队员</string>
     <string name="lineup_settled">确认阵容</string>
     <string name="add_new_player">新增球员</string>
     <string name="title_leader_mode">队长模式</string>

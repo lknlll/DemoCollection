@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +24,7 @@ import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class FlowActivity extends BaseActivity {
@@ -59,6 +59,8 @@ public class FlowActivity extends BaseActivity {
     TextView teamAlpha;
     @BindView(R.id.team_beta)
     TextView teamBeta;
+    @BindView(R.id.remove_member)
+    Button removeMember;
 
     @Override
     protected void setUpTitle(int titleResId) {
@@ -91,7 +93,6 @@ public class FlowActivity extends BaseActivity {
      */
     private Dialog buildAlertDialog_input() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.mipmap.ic_launcher);
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.input, null);
         builder.setView(v);
@@ -102,7 +103,11 @@ public class FlowActivity extends BaseActivity {
                 setTitle("您点击的是确定按钮!");
                 currentMember = (TextView) flexboxLayout.findViewWithTag(currentTag);
                 currentMember.setText(memberName.getEditableText().toString());
-                memberList.get(currentTag).setTitle(memberName.getEditableText().toString());
+                for (int i = 0; i < memberList.size(); i++) {
+                    if (currentTag == memberList.get(i).getId()) {
+                        memberList.get(i).setTitle(memberName.getEditableText().toString());
+                    }
+                }
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -136,9 +141,13 @@ public class FlowActivity extends BaseActivity {
                     public void onClick(View view) {
                         currentTag = (Integer) textView.getTag();
                         currentMember = (TextView) flexboxLayout.findViewWithTag(currentTag);
-                        memberList.get(currentTag).setSelected(!memberList.get(currentTag).isSelected());
-                        currentMember.setBackgroundResource(memberList.get(currentTag).isSelected() ? R.drawable.bg_box_selected :
-                                R.drawable.bg_box);
+                        for (int i = 0; i < memberList.size(); i++) {
+                            if (currentTag == memberList.get(i).getId()) {
+                                memberList.get(i).setSelected(!memberList.get(i).isSelected());
+                                currentMember.setBackgroundResource(memberList.get(i).isSelected() ? R.drawable.bg_box_selected :
+                                        R.drawable.bg_box);
+                            }
+                        }
                         countSign = 0;
                         for (DataBean dataBean : memberList) {
                             if (dataBean.isSelected()) {
@@ -146,7 +155,8 @@ public class FlowActivity extends BaseActivity {
                             }
                         }
                         randomTeamLeader.setEnabled(8 <= countSign);
-                        Log.e("TAG", book.getTitle());
+                        startGame.setVisibility(countSign>0?View.VISIBLE:View.GONE);
+                        removeMember.setVisibility(countSign>0?View.VISIBLE:View.GONE);
                     }
                 });
                 textView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -165,47 +175,46 @@ public class FlowActivity extends BaseActivity {
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.e("SIGN_TAG", book.getTitle());
                         int tag = (Integer) textView.getTag();
                         switch (priority) {
                             //A First
                             case 0:
                                 if (1 == teamBetaList.size() && 1 == teamAlphaList.size()) {
                                     teamBetaList.add(signingList.get(tag));
-                                    teamBeta.setText(teamBeta.getText()+ "\n"+signingList.get(tag).getTitle());
+                                    teamBeta.setText(teamBeta.getText() + "\n" + signingList.get(tag).getTitle());
                                     teamLeader.setText("请B队为A队选择一名队员");
-                                }else if (2 == teamBetaList.size() && 1 == teamAlphaList.size()){
+                                } else if (2 == teamBetaList.size() && 1 == teamAlphaList.size()) {
                                     teamAlphaList.add(signingList.get(tag));
-                                    teamAlpha.setText(teamAlpha.getText()+ "\n"+signingList.get(tag).getTitle());
+                                    teamAlpha.setText(teamAlpha.getText() + "\n" + signingList.get(tag).getTitle());
                                     teamLeader.setText("请B队选择一名队员");
-                                }else if (2 == teamBetaList.size() && 2 == teamAlphaList.size()){
+                                } else if (2 == teamBetaList.size() && 2 == teamAlphaList.size()) {
                                     teamBetaList.add(signingList.get(tag));
-                                    teamBeta.setText(teamBeta.getText()+ "\n"+signingList.get(tag).getTitle());
+                                    teamBeta.setText(teamBeta.getText() + "\n" + signingList.get(tag).getTitle());
                                     nextSelection = 0;//A
                                     teamLeader.setText("请A队选择一名队员");
-                                }else if (awaitCount == 2 && teamAlphaList.size() < teamBetaList.size()&& nextSelection == 0){
-                                    awaitCount --;
+                                } else if (awaitCount == 2 && teamAlphaList.size() < teamBetaList.size() && nextSelection == 0) {
+                                    awaitCount--;
                                     teamAlphaList.add(signingList.get(tag));
-                                    teamAlpha.setText(teamAlpha.getText()+ "\n"+signingList.get(tag).getTitle());
-                                    nextSelection =0;//A
+                                    teamAlpha.setText(teamAlpha.getText() + "\n" + signingList.get(tag).getTitle());
+                                    nextSelection = 0;//A
                                     teamLeader.setText("请A队再选择一名队员");
-                                }else if (awaitCount == 1 && teamAlphaList.size() == teamBetaList.size()&& nextSelection == 0){
-                                    awaitCount --;
+                                } else if (awaitCount == 1 && teamAlphaList.size() == teamBetaList.size() && nextSelection == 0) {
+                                    awaitCount--;
                                     teamAlphaList.add(signingList.get(tag));
-                                    teamAlpha.setText(teamAlpha.getText()+ "\n"+signingList.get(tag).getTitle());
-                                    nextSelection =1;//B
+                                    teamAlpha.setText(teamAlpha.getText() + "\n" + signingList.get(tag).getTitle());
+                                    nextSelection = 1;//B
                                     awaitCount = 2;
                                     teamLeader.setText("请B队选择一名队员");
-                                }else if (awaitCount == 2 && teamAlphaList.size() > teamBetaList.size()&& nextSelection ==1 ){
-                                    awaitCount --;
+                                } else if (awaitCount == 2 && teamAlphaList.size() > teamBetaList.size() && nextSelection == 1) {
+                                    awaitCount--;
                                     teamBetaList.add(signingList.get(tag));
-                                    teamBeta.setText(teamBeta.getText()+ "\n"+signingList.get(tag).getTitle());
-                                    nextSelection =1;//B
+                                    teamBeta.setText(teamBeta.getText() + "\n" + signingList.get(tag).getTitle());
+                                    nextSelection = 1;//B
                                     teamLeader.setText("请B队再选择一名队员");
-                                }else if (awaitCount == 1 && teamAlphaList.size() == teamBetaList.size()&& nextSelection ==1 ){
+                                } else if (awaitCount == 1 && teamAlphaList.size() == teamBetaList.size() && nextSelection == 1) {
                                     teamBetaList.add(signingList.get(tag));
-                                    teamBeta.setText(teamBeta.getText()+ "\n"+signingList.get(tag).getTitle());
-                                    nextSelection =0;//A
+                                    teamBeta.setText(teamBeta.getText() + "\n" + signingList.get(tag).getTitle());
+                                    nextSelection = 0;//A
                                     awaitCount = 2;
                                     teamLeader.setText("请A队选择一名队员");
                                 }
@@ -214,41 +223,41 @@ public class FlowActivity extends BaseActivity {
                             case 1:
                                 if (1 == teamAlphaList.size() && 1 == teamBetaList.size()) {
                                     teamAlphaList.add(signingList.get(tag));
-                                    teamAlpha.setText(teamAlpha.getText()+ "\n"+signingList.get(tag).getTitle());
+                                    teamAlpha.setText(teamAlpha.getText() + "\n" + signingList.get(tag).getTitle());
                                     teamLeader.setText("请A队为B队选择一名队员");
-                                }else if (2 == teamAlphaList.size() && 1 == teamBetaList.size()){
+                                } else if (2 == teamAlphaList.size() && 1 == teamBetaList.size()) {
                                     teamBetaList.add(signingList.get(tag));
-                                    teamBeta.setText(teamBeta.getText()+ "\n"+signingList.get(tag).getTitle());
+                                    teamBeta.setText(teamBeta.getText() + "\n" + signingList.get(tag).getTitle());
                                     teamLeader.setText("请A队选择一名队员");
-                                }else if (2 == teamAlphaList.size() && 2 == teamBetaList.size()){
+                                } else if (2 == teamAlphaList.size() && 2 == teamBetaList.size()) {
                                     teamAlphaList.add(signingList.get(tag));
-                                    teamAlpha.setText(teamAlpha.getText()+ "\n"+signingList.get(tag).getTitle());
+                                    teamAlpha.setText(teamAlpha.getText() + "\n" + signingList.get(tag).getTitle());
                                     nextSelection = 1;//B
                                     teamLeader.setText("请B队选择一名队员");
-                                }else if (awaitCount == 2 && teamAlphaList.size() > teamBetaList.size()&& nextSelection == 1){
-                                    awaitCount --;
+                                } else if (awaitCount == 2 && teamAlphaList.size() > teamBetaList.size() && nextSelection == 1) {
+                                    awaitCount--;
                                     teamBetaList.add(signingList.get(tag));
-                                    teamBeta.setText(teamBeta.getText()+ "\n"+signingList.get(tag).getTitle());
-                                    nextSelection =1;//B
+                                    teamBeta.setText(teamBeta.getText() + "\n" + signingList.get(tag).getTitle());
+                                    nextSelection = 1;//B
                                     teamLeader.setText("请B队再选择一名队员");
-                                }else if (awaitCount == 1 && teamAlphaList.size() == teamBetaList.size()&& nextSelection == 1){
-                                    awaitCount --;
+                                } else if (awaitCount == 1 && teamAlphaList.size() == teamBetaList.size() && nextSelection == 1) {
+                                    awaitCount--;
                                     teamBetaList.add(signingList.get(tag));
-                                    teamBeta.setText(teamBeta.getText()+ "\n"+signingList.get(tag).getTitle());
-                                    nextSelection =0;//A
+                                    teamBeta.setText(teamBeta.getText() + "\n" + signingList.get(tag).getTitle());
+                                    nextSelection = 0;//A
                                     awaitCount = 2;
                                     teamLeader.setText("请A队选择一名队员");
-                                }else if (awaitCount == 2 && teamAlphaList.size() < teamBetaList.size()&& nextSelection ==0 ){
-                                    awaitCount --;
+                                } else if (awaitCount == 2 && teamAlphaList.size() < teamBetaList.size() && nextSelection == 0) {
+                                    awaitCount--;
                                     teamAlphaList.add(signingList.get(tag));
-                                    teamAlpha.setText(teamAlpha.getText()+ "\n"+signingList.get(tag).getTitle());
-                                    nextSelection =0;//A
+                                    teamAlpha.setText(teamAlpha.getText() + "\n" + signingList.get(tag).getTitle());
+                                    nextSelection = 0;//A
                                     teamLeader.setText("请A队再选择一名队员");
-                                }else if (awaitCount == 1 && teamAlphaList.size() == teamBetaList.size()&& nextSelection ==0 ){
-                                    awaitCount --;
+                                } else if (awaitCount == 1 && teamAlphaList.size() == teamBetaList.size() && nextSelection == 0) {
+                                    awaitCount--;
                                     teamAlphaList.add(signingList.get(tag));
-                                    teamAlpha.setText(teamAlpha.getText()+ "\n"+signingList.get(tag).getTitle());
-                                    nextSelection =1;//B
+                                    teamAlpha.setText(teamAlpha.getText() + "\n" + signingList.get(tag).getTitle());
+                                    nextSelection = 1;//B
                                     awaitCount = 2;
                                     teamLeader.setText("请B队选择一名队员");
                                 }
@@ -264,9 +273,9 @@ public class FlowActivity extends BaseActivity {
                         }
                         if (0 == signingList.size()) {
                             teamLeader.setText("选人结束");
-                            Intent i = new Intent(FlowActivity.this,LineupActivity.class);
-                            i.putExtra("A",JSON.toJSONString(teamAlphaList));
-                            i.putExtra("B",JSON.toJSONString(teamBetaList));
+                            Intent i = new Intent(FlowActivity.this, LineupActivity.class);
+                            i.putExtra("A", JSON.toJSONString(teamAlphaList));
+                            i.putExtra("B", JSON.toJSONString(teamBetaList));
                             startActivity(i);
                         }
                     }
@@ -303,13 +312,12 @@ public class FlowActivity extends BaseActivity {
                 teamLeader.setText("请B队为A队选择一名队员");
                 break;
         }
-//        teamLeader.setVisibility(View.GONE);
         teamAlpha.setText(priority == 0
-                ?"A队(先行动)：\n" + signingList.get(sample[0]).getTitle() +"(队长)":
-                "A队：\n" + signingList.get(sample[0]).getTitle()+"(队长)");
+                ? "A队(先行动)：\n" + signingList.get(sample[0]).getTitle() + "(队长)" :
+                "A队：\n" + signingList.get(sample[0]).getTitle() + "(队长)");
         teamBeta.setText(priority == 0
-                ?"B队：\n" + signingList.get(sample[1]).getTitle()+"(队长)":
-                "B队(先行动)：\n" + signingList.get(sample[1]).getTitle()+"(队长)");
+                ? "B队：\n" + signingList.get(sample[1]).getTitle() + "(队长)" :
+                "B队(先行动)：\n" + signingList.get(sample[1]).getTitle() + "(队长)");
         List<DataBean> removing = new ArrayList<DataBean>();
         removing.add(signingList.get(sample[0]));
         teamAlphaList.add(signingList.get(sample[0]));
@@ -353,7 +361,15 @@ public class FlowActivity extends BaseActivity {
             return;
         }
         DataBean dataBean = new DataBean();
-        dataBean.setId(memberList.size());
+        List<Integer> l = new ArrayList<>();
+        for (int i = 0; i < memberList.size(); i++) {
+            l.add(memberList.get(i).getId());
+        }
+        int id =0;
+        for(int i = 0;l.contains(i);i++){
+            id = i+1;
+        }
+        dataBean.setId(id);
         dataBean.setTitle(newMemberEt.getEditableText().toString());
         dataBean.setSelected(false);
         memberList.add(dataBean);
@@ -401,5 +417,20 @@ public class FlowActivity extends BaseActivity {
         for (int i = 0; i < signingList.size(); i++) {
             signingPlayerFlexBox.addView(createNewFlexItemTextView(signingList.get(i), i, R.id.signing_player_flex_box));
         }
+    }
+
+    //删除队员
+    @OnClick(R.id.remove_member)
+    public void onRemoveMemberClicked() {
+        List<DataBean> removing = new ArrayList<DataBean>();
+        for (int i = 0; i < memberList.size(); i++) {
+            if (memberList.get(i).isSelected()) {
+                removing.add(memberList.get(i));
+            }
+        }
+        memberList.removeAll(removing);
+        flexboxLayout.removeAllViews();
+        PreferencesUtils.putString(FlowActivity.this, "MemberList", JSON.toJSONString(memberList));
+        setUpView();
     }
 }
