@@ -107,6 +107,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
             </LinearLayout>
+
+            <com.lkn.a11509.democollection.Widget.PercentView
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
