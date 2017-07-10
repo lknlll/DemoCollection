@@ -38,6 +38,7 @@ dependencies {
     compile 'com.wnafee:vector-compat:1.0.5'//两张静态图片合并SVG(Scalable Vector Graphics)
     compile 'com.alibaba:fastjson:1.1.54.android'
     compile 'com.github.adrielcafe:AndroidAudioRecorder:0.3.0'
+    compile 'com.jude:rollviewpager:1.4.6'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
 }

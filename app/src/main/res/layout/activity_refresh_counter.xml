@@ -6,7 +6,11 @@
     android:orientation="vertical">
 
     <include layout="@layout/widget_toolbar" />
-
+    <com.jude.rollviewpager.RollPagerView
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:rollviewpager_play_delay="3000"/>
     <TextView
         android:id="@+id/counter"
         android:layout_width="fill_parent"
