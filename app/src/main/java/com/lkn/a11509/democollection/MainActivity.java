@@ -2,14 +2,17 @@ package com.lkn.a11509.democollection;
 
 import android.Manifest;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -38,7 +41,6 @@ import butterknife.OnLongClick;
 
 public class MainActivity extends BaseActivity {
 
-
     @BindView(R.id.buk_tv)
     TextView bukTv;
     @BindView(R.id.buk_btn)
@@ -47,6 +49,18 @@ public class MainActivity extends BaseActivity {
     ListView bukLv;
 
     private List<DataBean> data;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Toast.makeText(this,"back key caught",Toast.LENGTH_SHORT).show();
+            // 在这里，拦截或者监听Android系统的返回键事件。
+            // return将拦截。
+            // 不做任何处理则默认交由Android系统处理。
+        }
+
+        return false;
+    }
 
     @Override
     protected void setUpContentView() {
@@ -213,10 +227,54 @@ public class MainActivity extends BaseActivity {
 
                 List<MenuItem> menuItemList = new ArrayList<MenuItem>();
                 MenuItem menuItem1 = new MenuItem();
-                menuItem1.setText("Hello World");
+                menuItem1.setText("checkPermission");
                 menuItem1.setStyle(MenuItem.MenuItemStyle.COMMON);
+                menuItem1.setMenuItemOnClickListener(new MenuItemOnClickListener(bottomMenuFragment, menuItem1) {
+                    @Override
+                    public void onClickMenuItem(View v, MenuItem menuItem) {
+                        Log.i("", "onClickMenuItem: " + menuItem.getText());
+                        PackageManager pm = getPackageManager();
+                        boolean permission = (PackageManager.PERMISSION_GRANTED ==
+                                pm.checkPermission("android.permission.RECORD_AUDIO", "com.lkn.a11509.democollection"));
+                        if (permission) {
+                            Toast.makeText(MainActivity.this,"有录音权限",Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(MainActivity.this,"木有录音权限",Toast.LENGTH_SHORT).show();
+                        }
+
+                        try {
+                            PackageInfo pack = pm.getPackageInfo("com.lkn.a11509.democollection",PackageManager.GET_PERMISSIONS);
+                            String[] permissionStrings = pack.requestedPermissions;
+                            String permissionReq = "";
+                            for (String permissionString : permissionStrings) {
+                                permissionReq = permissionReq + permissionString + "\n";
+                            }
+                            Toast.makeText(MainActivity.this,"权限清单--->" + permissionReq,Toast.LENGTH_SHORT).show();
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
                 MenuItem menuItem2 = new MenuItem();
-                menuItem2.setText("Menu Btn 2");
+                menuItem2.setText("去权限管理");
+                menuItem2.setMenuItemOnClickListener(new MenuItemOnClickListener(bottomMenuFragment, menuItem2) {
+                    @Override
+                    public void onClickMenuItem(View v, MenuItem menuItem) {
+                        if (Build.MANUFACTURER.equals("Xiaomi")) {
+                            Intent intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
+                            ComponentName componentName = new ComponentName("com.miui.securitycenter", "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+                            intent.setComponent(componentName);
+                            intent.putExtra("extra_pkgname", BuildConfig.APPLICATION_ID);
+                            startActivity(intent);
+                        }else if (Build.MANUFACTURER.equals("Meizu")) {
+                            Intent intent = new Intent("com.meizu.safe.security.SHOW_APPSEC");
+                            intent.addCategory(Intent.CATEGORY_DEFAULT);
+                            intent.putExtra("packageName", BuildConfig.APPLICATION_ID);
+                            startActivity(intent);
+                        }
+                        Log.i("", "onClickMenuItem: ");
+                    }
+                });
                 MenuItem menuItem3 = new MenuItem();
                 menuItem3.setText("点击！");
                 menuItem3.setMenuItemOnClickListener(new MenuItemOnClickListener(bottomMenuFragment, menuItem3) {
