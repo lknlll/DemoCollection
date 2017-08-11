@@ -39,6 +39,7 @@ dependencies {
     compile 'com.alibaba:fastjson:1.1.54.android'
     compile 'com.github.adrielcafe:AndroidAudioRecorder:0.3.0'
     compile 'com.jude:rollviewpager:1.4.6'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
 }

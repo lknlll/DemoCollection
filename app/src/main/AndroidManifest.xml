@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lkn.a11509.democollection">
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -44,8 +46,11 @@
         <activity
             android:name=".LineupActivity"
             android:theme="@style/Theme.MaterialDesign" />
-        <activity android:name=".RecordActivity"
-            android:theme="@style/Theme.MaterialDesign"/>
+        <activity
+            android:name=".RecordActivity"
+            android:theme="@style/Theme.MaterialDesign" />
+        <activity android:name=".PagingRecyclerActivity"
+            android:theme="@style/Theme.MaterialDesign" />
     </application>
 
 </manifest>
