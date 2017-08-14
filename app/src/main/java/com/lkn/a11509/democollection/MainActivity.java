@@ -24,6 +24,9 @@ import com.lkn.a11509.democollection.Adapter.TestAdapter;
 import com.lkn.a11509.democollection.Bean.DataBean;
 import com.lkn.a11509.democollection.Bean.MenuItem;
 import com.lkn.a11509.democollection.Fragment.BottomMenuFragment;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -300,6 +303,10 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.buk_btn:
                 Toast.makeText(this, R.id.buk_btn+"", Toast.LENGTH_SHORT).show();
+                //Launch recording Video
+                PictureSelector.create(MainActivity.this)
+                        .openCamera(PictureMimeType.ofVideo())
+                        .forResult(PictureConfig.CHOOSE_REQUEST);
                 break;
         }
     }

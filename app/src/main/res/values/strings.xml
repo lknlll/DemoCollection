@@ -22,6 +22,7 @@
     <string name="title_activity_life_circle_demo">LifeCircleActivity</string>
     <string name="title_refresh_counter">RefreshCounterActivity</string>
     <string name="bottom_popup_menu_demo">Bottom Popup Menu</string>
+    <string name="toast_id_and_recording">Toast id &amp; Recording</string>
 
     <string name="help">Tap on the image to start the morphing or select another animation from the menu.</string>
     <string name="menu_github">VectAlign on github</string>
