@@ -200,9 +200,12 @@ public class MainActivity extends BaseActivity {
                 case 2:
                 case 3:
                 case 4:
-                case 5:
                     bean.setTitle(getResources().getString(R.string.app_name)+i);
                     bean.setContent(getResources().getString(R.string.app_name));
+                    break;
+                case 5:
+                    bean.setTitle("WerbVideo");
+                    bean.setContent("https://github.com/Werb/MediaUtils");
                     break;
                 case 6:
                     bean.setTitle("PaletteImageViewActivity");
@@ -345,6 +348,9 @@ public class MainActivity extends BaseActivity {
                 Toast.makeText(this, getString(R.string.main_activity_position)
                         + position + getString(R.string.title_refresh_counter), Toast.LENGTH_SHORT).show();
                 gotoActivity(MainActivity.this,RefreshCounterActivity.class,null,false);
+                break;
+            case 5:
+                gotoActivity(MainActivity.this,WertVideoActivity.class,null,false);
                 break;
             case 6:
                 gotoActivity(MainActivity.this,PaletteImageViewActivity.class,null,false);

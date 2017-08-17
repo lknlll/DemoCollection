@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -52,7 +51,17 @@
         <activity
             android:name=".RecordActivity"
             android:theme="@style/Theme.MaterialDesign" />
-        <activity android:name=".PagingRecyclerActivity"
+        <activity
+            android:name=".PagingRecyclerActivity"
+            android:theme="@style/Theme.MaterialDesign" />
+        <activity
+            android:name=".WertVideoActivity"
+            android:theme="@style/Theme.MaterialDesign" />
+        <activity
+            android:name=".VideoRecorderActivity"
+            android:theme="@style/Theme.MaterialDesign" />
+        <activity
+            android:name=".LinRecordActivity"
             android:theme="@style/Theme.MaterialDesign" />
     </application>
 
