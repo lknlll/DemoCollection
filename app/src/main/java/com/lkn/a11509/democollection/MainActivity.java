@@ -192,7 +192,7 @@ public class MainActivity extends BaseActivity {
 
     private void initListViewData(){
         data = new ArrayList<>();
-        for (int i = 0; i<10;i++){
+        for (int i = 0; i<11;i++){
             DataBean bean = new DataBean();
             switch (i) {
                 case 0:
@@ -222,6 +222,10 @@ public class MainActivity extends BaseActivity {
                 case 9:
                     bean.setTitle("PagingRecycler");
                     bean.setContent("列表页");
+                    break;
+                case 10:
+                    bean.setTitle("LJWebView");
+                    bean.setContent("LJWebView");
                     break;
             }
             data.add(bean);
@@ -363,6 +367,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case 9:
                 gotoActivity(MainActivity.this,PagingRecyclerActivity.class,null,false);
+                break;
+            case 10:
+                gotoActivity(MainActivity.this,LJActivity.class,null,false);
                 break;
         }
     }
