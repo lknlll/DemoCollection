@@ -42,6 +42,10 @@ dependencies {
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.1'
     compile 'com.werb.permissionschecker:permissionschecker:0.0.1-beta2'
+    /**
+     * https://github.com/yilylong/UserGuideView
+     **/
+    compile 'com.github.yilylong:UserGuideView:v1.0.1'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
 }

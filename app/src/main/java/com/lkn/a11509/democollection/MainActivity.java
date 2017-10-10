@@ -9,6 +9,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -27,6 +29,9 @@ import com.lkn.a11509.democollection.Fragment.BottomMenuFragment;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
+import com.zhl.userguideview.UserGuideView;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -37,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.OnItemLongClick;
@@ -50,13 +56,15 @@ public class MainActivity extends BaseActivity {
     Button bukBtn;
     @BindView(R.id.buk_lv)
     ListView bukLv;
+    @BindView(R.id.guideView)
+    UserGuideView guideView;
 
     private List<DataBean> data;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Toast.makeText(this,"back key caught",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "back key caught", Toast.LENGTH_SHORT).show();
             // 在这里，拦截或者监听Android系统的返回键事件。
             // return将拦截。
             // 不做任何处理则默认交由Android系统处理。
@@ -74,6 +82,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setUpView() {
+//        单一高亮View的设置方法
+//        guideView.setHighLightView(bukBtn);
+//        多个高亮View顺序展示
+        View[] target = new View[]{bukTv,bukBtn,bukLv};
+        guideView.setHightLightView(target);
         initListViewData();
     }
 
@@ -93,8 +106,8 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(MainActivity.this, "成功复制到粘贴板",
                     Toast.LENGTH_SHORT).show();
         }
-        Log.v("deviceInfo",getDeviceInfo(this));
-        Log.v("screenInfo",getWindowsSize());
+        Log.v("deviceInfo", getDeviceInfo(this));
+        Log.v("screenInfo", getWindowsSize());
     }
 
     @Override
@@ -125,10 +138,11 @@ public class MainActivity extends BaseActivity {
         }
         return result;
     }
+
     public static String getDeviceInfo(Context context) {
         try {
-            org.json.JSONObject json = new org.json.JSONObject();
-            android.telephony.TelephonyManager tm = (android.telephony.TelephonyManager) context
+            JSONObject json = new JSONObject();
+            TelephonyManager tm = (TelephonyManager) context
                     .getSystemService(Context.TELEPHONY_SERVICE);
             String device_id = null;
             if (checkPermission(context, Manifest.permission.READ_PHONE_STATE)) {
@@ -169,8 +183,8 @@ public class MainActivity extends BaseActivity {
                 device_id = mac;
             }
             if (TextUtils.isEmpty(device_id)) {
-                device_id = android.provider.Settings.Secure.getString(context.getContentResolver(),
-                        android.provider.Settings.Secure.ANDROID_ID);
+                device_id = Settings.Secure.getString(context.getContentResolver(),
+                        Settings.Secure.ANDROID_ID);
             }
             json.put("device_id", device_id);
             return json.toString();
@@ -180,19 +194,19 @@ public class MainActivity extends BaseActivity {
         return null;
     }
 
-    private String getWindowsSize(){
+    private String getWindowsSize() {
         //Android获得屏幕的宽和高
         WindowManager windowManager = getWindowManager();
         Display display = windowManager.getDefaultDisplay();
         int screenWidth = screenWidth = display.getWidth();
         int screenHeight = screenHeight = display.getHeight();
-        String size = screenHeight +"x"+screenWidth;
+        String size = screenHeight + "x" + screenWidth;
         return size;
     }
 
-    private void initListViewData(){
+    private void initListViewData() {
         data = new ArrayList<>();
-        for (int i = 0; i<11;i++){
+        for (int i = 0; i < 11; i++) {
             DataBean bean = new DataBean();
             switch (i) {
                 case 0:
@@ -200,7 +214,7 @@ public class MainActivity extends BaseActivity {
                 case 2:
                 case 3:
                 case 4:
-                    bean.setTitle(getResources().getString(R.string.app_name)+i);
+                    bean.setTitle(getResources().getString(R.string.app_name) + i);
                     bean.setContent(getResources().getString(R.string.app_name));
                     break;
                 case 5:
@@ -230,7 +244,7 @@ public class MainActivity extends BaseActivity {
             }
             data.add(bean);
         }
-        bukLv.setAdapter(new TestAdapter(this,data));
+        bukLv.setAdapter(new TestAdapter(this, data));
     }
 
     @OnClick({R.id.buk_tv, R.id.buk_btn})
@@ -251,19 +265,19 @@ public class MainActivity extends BaseActivity {
                         boolean permission = (PackageManager.PERMISSION_GRANTED ==
                                 pm.checkPermission("android.permission.RECORD_AUDIO", "com.lkn.a11509.democollection"));
                         if (permission) {
-                            Toast.makeText(MainActivity.this,"有录音权限",Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(MainActivity.this,"木有录音权限",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "有录音权限", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "木有录音权限", Toast.LENGTH_SHORT).show();
                         }
 
                         try {
-                            PackageInfo pack = pm.getPackageInfo("com.lkn.a11509.democollection",PackageManager.GET_PERMISSIONS);
+                            PackageInfo pack = pm.getPackageInfo("com.lkn.a11509.democollection", PackageManager.GET_PERMISSIONS);
                             String[] permissionStrings = pack.requestedPermissions;
                             String permissionReq = "";
                             for (String permissionString : permissionStrings) {
                                 permissionReq = permissionReq + permissionString + "\n";
                             }
-                            Toast.makeText(MainActivity.this,"权限清单--->" + permissionReq,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "权限清单--->" + permissionReq, Toast.LENGTH_SHORT).show();
                         } catch (PackageManager.NameNotFoundException e) {
                             e.printStackTrace();
                         }
@@ -280,7 +294,7 @@ public class MainActivity extends BaseActivity {
                             intent.setComponent(componentName);
                             intent.putExtra("extra_pkgname", BuildConfig.APPLICATION_ID);
                             startActivity(intent);
-                        }else if (Build.MANUFACTURER.equals("Meizu")) {
+                        } else if (Build.MANUFACTURER.equals("Meizu")) {
                             Intent intent = new Intent("com.meizu.safe.security.SHOW_APPSEC");
                             intent.addCategory(Intent.CATEGORY_DEFAULT);
                             intent.putExtra("packageName", BuildConfig.APPLICATION_ID);
@@ -295,7 +309,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onClickMenuItem(View v, MenuItem menuItem) {
                         Intent intent = new Intent();
-                        intent.setClass(MainActivity.this,FlowActivity.class);
+                        intent.setClass(MainActivity.this, FlowActivity.class);
                         startActivity(intent);
                         Log.i("", "onClickMenuItem: ");
                     }
@@ -309,7 +323,7 @@ public class MainActivity extends BaseActivity {
                 bottomMenuFragment.show(getSupportFragmentManager(), "BottomMenuFragment");
                 break;
             case R.id.buk_btn:
-                Toast.makeText(this, R.id.buk_btn+"", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.id.buk_btn + "", Toast.LENGTH_SHORT).show();
                 //Launch recording Video
                 PictureSelector.create(MainActivity.this)
                         .openCamera(PictureMimeType.ofVideo())
@@ -320,8 +334,8 @@ public class MainActivity extends BaseActivity {
 
     //注意：这个方法返回boolean类型
     @OnLongClick({R.id.buk_tv})
-    public boolean onLongClick(View view){
-        switch (view.getId()){
+    public boolean onLongClick(View view) {
+        switch (view.getId()) {
             case R.id.buk_tv:
                 //返回被调用方法名
                 Toast.makeText(this, new Throwable().getStackTrace()[0].getMethodName(), Toast.LENGTH_SHORT).show();
@@ -331,52 +345,52 @@ public class MainActivity extends BaseActivity {
     }
 
     @OnItemClick({R.id.buk_lv})
-    public void onItemClick(int position){
+    public void onItemClick(int position) {
         switch (position) {
             case 0:
                 Toast.makeText(this, getString(R.string.main_activity_position)
                         + position + getString(R.string.module_name_recycler), Toast.LENGTH_SHORT).show();
-                gotoActivity(MainActivity.this,RecyclerDemoActivity.class,null,false);
+                gotoActivity(MainActivity.this, RecyclerDemoActivity.class, null, false);
                 break;
             case 1:
                 Toast.makeText(this, getString(R.string.main_activity_position)
                         + position + getString(R.string.title_activity_refresh_demo), Toast.LENGTH_SHORT).show();
-                gotoActivity(MainActivity.this,DefineLoadWithRefreshActivity.class,null,false);
+                gotoActivity(MainActivity.this, DefineLoadWithRefreshActivity.class, null, false);
                 break;
             case 2:
                 Toast.makeText(this, getString(R.string.main_activity_position)
                         + position + getString(R.string.title_activity_life_circle_demo), Toast.LENGTH_SHORT).show();
-                gotoActivity(MainActivity.this,LifeCircleActivity.class,null,false);
+                gotoActivity(MainActivity.this, LifeCircleActivity.class, null, false);
                 break;
             case 3:
                 Toast.makeText(this, getString(R.string.main_activity_position)
                         + position + getString(R.string.title_refresh_counter), Toast.LENGTH_SHORT).show();
-                gotoActivity(MainActivity.this,RefreshCounterActivity.class,null,false);
+                gotoActivity(MainActivity.this, RefreshCounterActivity.class, null, false);
                 break;
             case 5:
-                gotoActivity(MainActivity.this,WertVideoActivity.class,null,false);
+                gotoActivity(MainActivity.this, WertVideoActivity.class, null, false);
                 break;
             case 6:
-                gotoActivity(MainActivity.this,PaletteImageViewActivity.class,null,false);
+                gotoActivity(MainActivity.this, PaletteImageViewActivity.class, null, false);
                 break;
             case 7:
-                gotoActivity(MainActivity.this,VectAlignActivity.class,null,false);
+                gotoActivity(MainActivity.this, VectAlignActivity.class, null, false);
                 break;
             case 8:
-                gotoActivity(MainActivity.this,RecordActivity.class,null,false);
+                gotoActivity(MainActivity.this, RecordActivity.class, null, false);
                 break;
             case 9:
-                gotoActivity(MainActivity.this,PagingRecyclerActivity.class,null,false);
+                gotoActivity(MainActivity.this, PagingRecyclerActivity.class, null, false);
                 break;
             case 10:
-                gotoActivity(MainActivity.this,LJActivity.class,null,false);
+                gotoActivity(MainActivity.this, LJActivity.class, null, false);
                 break;
         }
     }
 
     //注意：这个方法返回boolean类型
     @OnItemLongClick({R.id.buk_lv})
-    public boolean onItemLongClick(View view){
+    public boolean onItemLongClick(View view) {
         Toast.makeText(this, "你要不要再按久点！", Toast.LENGTH_SHORT).show();
         return true;
     }
