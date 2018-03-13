@@ -1,9 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+//AS 3.0 changes
+//apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    //AS 3.0 changes
+    //Each version of the Android Gradle Plugin now has a default version of the build tools.
+    //buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.lkn.a11509.democollection"
         minSdkVersion 15
@@ -27,7 +30,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.jakewharton:butterknife:8.2.1'
+    compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'cn.bingoogolapple:bga-refreshlayout:1.0.7@aar'
@@ -47,7 +50,9 @@ dependencies {
      **/
     compile 'com.github.yilylong:UserGuideView:v1.0.1'
     testCompile 'junit:junit:4.12'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    //AS 3.0 changes
+//    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
 repositories {
     maven { url "https://jitpack.io" }
